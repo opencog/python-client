@@ -20,17 +20,17 @@ except:
     print "Optional Vagrant functionality not enabled; to enable, install " \
           "python-vagrant, fabric"
 
+# If you are running OpenCog in a Vagrant VM and running the Python Client API
+# on the host machine, then set the following parameter 'USE_VAGRANT' to True
+# and specify the ID of your Vagrant VM
+USE_VAGRANT = True
+VAGRANT_ID = "cb9fa8c"
+
 # Configure the OpenCog REST API client
 IP_ADDRESS = '127.0.0.1'
 PORT = '5000'
 uri = 'http://' + IP_ADDRESS + ':' + PORT + '/api/v1.1/'
 headers = {'content-type': 'application/json'}
-
-# If you are running OpenCog in a Vagrant VM and running the Python Client API
-# on the host machine, then set the following parameter 'USE_VAGRANT' to True
-# and specify the ID of your Vagrant VM
-USE_VAGRANT = False
-VAGRANT_ID = "XXXX"
 
 # Configure the path of the OpenCog source folder relative to the user's
 # home directory, including parameters to allow automatic bootstrapping of the

@@ -38,6 +38,17 @@ See the usage example in ```example.py```
 
 See an example visualization of the attentional focus dynamics as a slideshow of PNG images rendered from DOT representations in ```attentional_focus_slideshow.py```
 
+#### Vagrant (optional)
+
+**Note: These instructions are optional and only apply if you are planning to use Vagrant.**
+
+The Client API can be used with Vagrant. For example, you can run the OpenCog daemon inside a virtual machine, and then do all of your Python development in Mac OS.
+
+To set up OpenCog in this manner, follow these instructions:
+http://wiki.opencog.org/w/Building_OpenCog_in_a_Linux_Virtual_Machine_on_Mac_OS_X
+
+Then, to use the Client API with Vagrant, open the file ```configuration.py``` and set the parameter ```USE_VAGRANT``` to ```True``` and ```VAGRANT_ID``` to the ID of your VM
+
 #### Documentation
 
 The client API has docstrings for each method that describe correct usage. A summary of the available methods is presented below.
