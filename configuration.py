@@ -29,8 +29,8 @@ headers = {'content-type': 'application/json'}
 # If you are running OpenCog in a Vagrant VM and running the Python Client API
 # on the host machine, then set the following parameter 'USE_VAGRANT' to True
 # and specify the ID of your Vagrant VM
-USE_VAGRANT = True
-VAGRANT_ID = "cb9fa8c"
+USE_VAGRANT = False
+VAGRANT_ID = "XXXX"
 
 # Configure the path of the OpenCog source folder relative to the user's
 # home directory, including parameters to allow automatic bootstrapping of the
