@@ -10,6 +10,7 @@ __author__ = 'Cosmo Harrigan'
 from configuration import *
 import os
 from subprocess import check_call, Popen
+from multiprocessing import Process
 
 # MongoDB needs to be started with 'sudo service mongod start'
 # If MongoDB refuses to start, e.g. after a recent crash, check the log at
@@ -395,8 +396,15 @@ def run_opencog_daemon():
      sending them to the REST API
     """
     # Start the OpenCog CogServer daemon
-    os.chdir(OPENCOG_SUBFOLDER)
-    Popen([OPENCOG_COGSERVER_START])
+    if USE_VAGRANT:
+        process = Process(target=run_vagrant_command,
+                          args=(VAGRANT_ID, OPENCOG_COGSERVER_START))
+        process.start()
+
+    else:
+        os.chdir(OPENCOG_SUBFOLDER)
+        Popen([OPENCOG_COGSERVER_START])
+
     sleep(OPENCOG_INIT_DELAY)
 
     # Start the REST API so that further commands can be issued using it
@@ -409,5 +417,5 @@ def terminate_opencog_daemon():
     """
     # CogServer doesn't terminate cleanly when running REST API process. When
     # fixed, change this to a much friendlier mechanism
-    os.system('pkill cogserver')
+    os.system(OPENCOG_COGSERVER_STOP)
     sleep(OPENCOG_INIT_DELAY)
