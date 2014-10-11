@@ -9,16 +9,10 @@ __author__ = 'Cosmo Harrigan'
 from requests import *
 import json
 import csv
-import pymongo
 from os.path import expanduser
 from time import sleep
 
-try:
-    import vagrant
-    from fabric.api import task, run, settings, hide
-except ImportError:
-    print "Optional Vagrant functionality not enabled; to enable, install " \
-          "python-vagrant, fabric"
+### User-definable configuration parameters
 
 # If you are running OpenCog in a Vagrant VM and running the Python Client API
 # on the host machine, then set the following parameter 'USE_VAGRANT' to True
@@ -27,7 +21,39 @@ except ImportError:
 USE_VAGRANT = True
 VAGRANT_ID = "cb9fa8c"
 
-# Configure the OpenCog REST API client
+# Configure MongoDB parameters
+MONGODB_CONNECTION_STRING = "mongodb://localhost:27017"
+MONGODB_DATABASE = 'attention-timeseries'
+
+### Vagrant setup
+
+try:
+    import vagrant
+    from fabric.api import task, run, settings, hide
+except ImportError:
+    print "Optional Vagrant functionality not enabled; to enable, install " \
+          "python-vagrant, fabric"
+
+### MongoDB setup
+
+try:
+    import pymongo
+    # Create a MongoDB connection
+    client = pymongo.MongoClient(MONGODB_CONNECTION_STRING)
+    mongo = client[MONGODB_DATABASE]
+except ImportError:
+    print "Optional MongoDB functionality not enabled; to enable, install " \
+          "MongoDB and PyMongo"
+
+
+def clear_mongodb():
+    if client is not None:
+        client.drop_database(MONGODB_DATABASE)
+        global mongo
+        mongo = client[MONGODB_DATABASE]
+
+### OpenCog REST API client setup
+
 IP_ADDRESS = '127.0.0.1'
 PORT = '5000'
 uri = 'http://' + IP_ADDRESS + ':' + PORT + '/api/v1.1/'
@@ -49,11 +75,6 @@ else:
     OPENCOG_COGSERVER_START = "cd ~/opencog/build && ./opencog/server/cogserver"
     OPENCOG_SOURCE_FOLDER = "/home/vagrant/opencog/opencog/"
     OPENCOG_SUBFOLDER = "/home/vagrant/opencog/build"
-
-# Configure MongoDB parameters
-MONGODB_CONNECTION_STRING = "mongodb://localhost:27017"
-MONGODB_DATABASE = 'attention-timeseries'
-
 
 # Allows bash commands to be sent to a specific Vagrant VM
 @task

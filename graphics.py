@@ -42,14 +42,9 @@ __author__ = 'Cosmo Harrigan'
 # Sets the subfolder for storing the analysis files
 ANALYSIS_FOLDER = os.path.dirname(__file__)
 
-sub_dir = "timeseries"
+sub_dir = "images"
 if not os.path.exists(sub_dir):
     os.makedirs(sub_dir)
-
-client = pymongo.MongoClient(MONGODB_CONNECTION_STRING)
-mongo = client[MONGODB_DATABASE]
-
-points = mongo['points']
 
 
 def render_image(dot, uid):
@@ -74,20 +69,28 @@ def render_image(dot, uid):
     check_call(['dot', '-Tpng', dot_full_path, '-o', png_full_path])
     os.remove(dot_full_path)
 
-# Iterate over the point in time snapshots
-sequence_number = 0
-for point in points.find():
-    if len(point['atoms']) == 0:
-        continue
 
-    # Insert the Scheme representation of this point in time to the atomspace
-    clear_atomspace()
-    scheme(point['scheme'])
+# Example application
+if __name__ == "__main__":
+    client = pymongo.MongoClient(MONGODB_CONNECTION_STRING)
+    mongo = client[MONGODB_DATABASE]
 
-    # Request the DOT graph representation
-    dot = dump_atomspace_dot()
+    points = mongo['points']
 
-    # Render the graph to an image
-    render_image(dot, sequence_number)
+    # Iterate over the point in time snapshots
+    sequence_number = 0
+    for point in points.find():
+        if len(point['atoms']) == 0:
+            continue
 
-    sequence_number += 1
+        # Insert the Scheme representation of this point in time to the atomspace
+        clear_atomspace()
+        scheme(point['scheme'])
+
+        # Request the DOT graph representation
+        dot = dump_atomspace_dot()
+
+        # Render the graph to an image
+        render_image(dot, sequence_number)
+
+        sequence_number += 1
