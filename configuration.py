@@ -18,8 +18,8 @@ from time import sleep
 # on the host machine, then set the following parameter 'USE_VAGRANT' to True
 # and specify the ID of your Vagrant VM (you can find this using the command
 # 'vagrant global-status'
-USE_VAGRANT = True
-VAGRANT_ID = "cb9fa8c"
+USE_VAGRANT = False
+VAGRANT_ID = "XXXX"
 
 # Configure MongoDB parameters
 MONGODB_CONNECTION_STRING = "mongodb://localhost:27017"
