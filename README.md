@@ -20,18 +20,20 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 - Requires the [requests library](http://docs.python-requests.org/en/latest/user/install/#install)
 
-- Requires the [PyMongo library](http://api.mongodb.org/python/current/installation.html)
+- Recommended: [PyMongo library](http://api.mongodb.org/python/current/installation.html)
 
-- Requires [MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
+- Recommended: [MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
+
+- Recommended: [GraphViz](http://www.graphviz.org/Download..php)
 
 #### Example usage
 
 ##### IPython Notebook example
-The recommended way to learn how to use **python-client** is with IPython Notebook. An example demonstration is provided that combines documentation, interactive code execution, and graphical visualizaitons.
+The recommended way to learn how to use **python-client** is with IPython Notebook. An example demonstration is provided that combines documentation, interactive code execution, and graphical visualizations.
 
-A static rendering of the example is available online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/ipython-notebook/example.ipynb).
+The example can be viewed online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/ipython-notebook/example.ipynb). Note that the online version is not interactive, whereas on your own machine it will be interactive.
 
-You will need to install [IPython Notebook](http://ipython.org/notebook.html) first.
+To run the example on your machine, you will need to install [IPython Notebook](http://ipython.org/notebook.html) first.
 
 Then, run ```ipython notebook``` from the command line in this folder, and then open the notebook named ```example.ipynb```
 
@@ -164,6 +166,12 @@ server.start()
     also be captured.
     :return: a PointInTime dictionary that captures the atomspace at the given
     timestep
+    
+###### atomspace()
+    Retrieves a snapshot of the atomspace. Take note that the snapshot returned
+    is static, and must be called again when you want it to be updated.
+    
+    :return: a dictionary of atoms
 
 ###### export_timeseries_csv(timeseries, filename, scheme=False)
     Export the timeseries to a CSV file.
