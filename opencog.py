@@ -12,20 +12,6 @@ import os
 from subprocess import check_call, Popen
 from multiprocessing import Process
 
-# MongoDB needs to be started with 'sudo service mongod start'
-# If MongoDB refuses to start, e.g. after a recent crash, check the log at
-# /var/log/mongodb/mongodb.log. This may be due to an old lock file which can
-# be easily removed with "rm /var/lib/mongodb/mongod.lock"
-
-# Create a MongoDB connection
-client = pymongo.MongoClient(MONGODB_CONNECTION_STRING)
-mongo = client[MONGODB_DATABASE]
-
-
-def clear_mongodb():
-    client.drop_database(MONGODB_DATABASE)
-    mongo = client[MONGODB_DATABASE]
-
 
 class Atom(object):
     """
@@ -228,13 +214,18 @@ def get_atomspace(timestep, scheme=False):
 
 def atomspace():
     """
-    Gets a snapshot of the atomspace
-    :return: a JSON-formatted list of atom objects
+    Retrieves a snapshot of the atomspace. Take note that the snapshot returned
+    is static, and must be called again when you want it to be updated.
+    :return: a dictionary of atoms
     """
     get_response = get(uri + 'atoms')
     get_result = get_response.json()['result']['atoms']
 
-    return get_result
+    result = {}
+    for atom in get_result:
+        result[atom['handle']] = atom
+
+    return result
 
 
 def export_timeseries_csv(timeseries, filename, scheme=False):
