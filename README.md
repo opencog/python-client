@@ -5,6 +5,8 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 #### Functionality
 
+- Start and stop the OpenCog server
+- Control an OpenCog server on your local machine or on a Vagrant box
 - Control the steps of each mind agent
 - Capture the contents of the attentional focus at each step in Scheme format
 - Capture the discrete dynamical evolution of the attentional focus
@@ -14,29 +16,25 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 #### Requirements
 
-- Requires the REST API to be configured as described here:
+- Requires the REST API to be configured as described [here](http://wiki.opencog.org/w/REST_API#Configuration) and installation of the [requests library](http://docs.python-requests.org/en/latest/user/install/#install)
 
-    http://wiki.opencog.org/w/REST_API#Configuration
+- For full functionality, you should also install [PyMongo](http://api.mongodb.org/python/current/installation.html), [MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/) and [GraphViz](http://www.graphviz.org/Download..php)
 
-    The REST API must be started before using this interface.
+#### Example usage
 
-- Requires the requests library:
+##### IPython Notebook example
+The recommended way to learn how to use **python-client** is with IPython Notebook. An example demonstration is provided that combines documentation, interactive code execution, and graphical visualizations.
 
-    http://docs.python-requests.org/en/latest/user/install/#install
+**The example can be viewed online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/ipython-notebook/example.ipynb).** Note that the online version is not interactive, whereas on your own machine it will be interactive.
 
-- Requires the PyMongo library:
+To run the example on your machine, you will need to install [IPython Notebook](http://ipython.org/notebook.html) first.
 
-    http://api.mongodb.org/python/current/installation.html
+Then, run ```ipython notebook``` from the command line in this folder, and then open the notebook named ```example.ipynb```
 
-- Requires MongoDB:
-
-    http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
-
-#### Example
-
+##### Additional examples
 See the usage example in ```example.py```
 
-See an example visualization of the attentional focus dynamics as a slideshow of PNG images rendered from DOT representations in ```attentional_focus_slideshow.py```
+Also see an example visualization of the attentional focus dynamics as a slideshow of PNG images rendered from DOT representations in ```graphics.py```
 
 #### Vagrant (optional)
 
@@ -49,11 +47,30 @@ http://wiki.opencog.org/w/Building_OpenCog_in_a_Linux_Virtual_Machine_on_Mac_OS_
 
 Then, to use the Client API with Vagrant, open the file ```configuration.py``` and set the parameter ```USE_VAGRANT``` to ```True``` and ```VAGRANT_ID``` to the ID of your VM
 
-#### Documentation
+#### OpenCog Python Client API Documentation
 
 The client API has docstrings for each method that describe correct usage. A summary of the available methods is presented below.
 
-##### OpenCog Python Client API Documentation
+##### Server
+
+**Before performing operations with OpenCog, you need to have an instance of a Server object:**
+
+```
+import opencog
+server = opencog.Server()
+server.start()
+```
+
+###### start()
+    Bootstraps the OpenCog CogServer daemon so that it will run in the background with the
+    REST API so that further commands can be issued by sending them to the REST API
+
+###### stop()
+    Terminate the OpenCog CogServer daemon
+
+##### Operations
+
+**After you have started a Server, you can perform the following operations.**
 
 ###### create_point(timestep, atoms, scheme=None)
     Create a PointInTime dictionary from a JSON atom representation
@@ -143,6 +160,12 @@ The client API has docstrings for each method that describe correct usage. A sum
     also be captured.
     :return: a PointInTime dictionary that captures the atomspace at the given
     timestep
+    
+###### atomspace()
+    Retrieves a snapshot of the atomspace. Take note that the snapshot returned
+    is static, and must be called again when you want it to be updated.
+    
+    :return: a dictionary of atoms
 
 ###### export_timeseries_csv(timeseries, filename, scheme=False)
     Export the timeseries to a CSV file.
@@ -218,13 +241,6 @@ The client API has docstrings for each method that describe correct usage. A sum
 ###### set_wages(value)
     Sets the wages parameter for the attention allocation importance updating agent
     value is an Integer value representing the amount of stimulus to be assigned to the target
-
-###### run_opencog_daemon()
-    Bootstraps the OpenCog CogServer daemon so that it will run in the background with the
-    REST API so that further commands can be issued by sending them to the REST API
-
-###### terminate_opencog_daemon()
-    Terminate the OpenCog CogServer daemon
 
 ###### class Atom(object)
     Stores an atom handle and an STI value

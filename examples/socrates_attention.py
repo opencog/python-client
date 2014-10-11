@@ -4,7 +4,7 @@ An adaptation of the interface defined in attention_interface.py to the Socrates
 
 __author__ = 'Sebastian Ruder'
 
-from client.client import *
+from opencog.client import *
 from opencog.atomspace import types
 from time import sleep
 
