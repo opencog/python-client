@@ -45,6 +45,8 @@ The Client API can be used with Vagrant. For example, you can run the OpenCog da
 To set up OpenCog in this manner, follow these instructions:
 http://wiki.opencog.org/w/Building_OpenCog_in_a_Linux_Virtual_Machine_on_Mac_OS_X
 
+Then, install the Python package [python-vagrant](https://pypi.python.org/pypi/python-vagrant)
+
 Then, to use the Client API with Vagrant, open the file ```configuration.py``` and set the parameter ```USE_VAGRANT``` to ```True``` and ```VAGRANT_ID``` to the ID of your VM
 
 #### OpenCog Python Client API Documentation
