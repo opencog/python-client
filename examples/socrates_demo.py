@@ -36,7 +36,7 @@ if not os.path.exists(sub_dir):
 def render_image(dot, uid):
     """
     Renders a PNG image from a DOT graph description;
-    Method copied from attentional_focus_slideshow.py because import didn't
+    Method copied from graphics.py because import didn't
     work properly
 
     Parameters:

@@ -1,6 +1,8 @@
 """
-Example application where changes to the attentional focus over time are
-visualized.
+Helper function for rendering DOT graph visualizations using Graphviz
+
+Includes an example application where changes to the attentional focus over
+time are visualized.
 
 Allows analysis of an attentional focus timeseries by creating a slideshow
 of PNG images using the Graphviz graph layout utility with DOT graph
@@ -56,8 +58,8 @@ def render_image(dot, uid):
     dot (required) The DOT graph description of the point in time
     uid (required) A unique identifier, which should increment at each time interval
     """
-    dot_filename = "{0}-{1:05d}.dot".format(sub_dir, uid)
-    png_filename = "{0}-{1:05d}.png".format(sub_dir, uid)
+    dot_filename = "{0:05d}.dot".format(uid)
+    png_filename = "{0:05d}.png".format(uid)
 
     dot_full_path = os.path.join(ANALYSIS_FOLDER, sub_dir, dot_filename)
     png_full_path = os.path.join(ANALYSIS_FOLDER, sub_dir, png_filename)
