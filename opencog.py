@@ -226,6 +226,17 @@ def get_atomspace(timestep, scheme=False):
         return create_point(timestep, get_result, scheme=atomspace_contents)
 
 
+def atomspace():
+    """
+    Gets a snapshot of the atomspace
+    :return: a JSON-formatted list of atom objects
+    """
+    get_response = get(uri + 'atoms')
+    get_result = get_response.json()['result']['atoms']
+
+    return get_result
+
+
 def export_timeseries_csv(timeseries, filename, scheme=False):
     """
     Export the timeseries to a CSV file.
@@ -389,33 +400,48 @@ def set_wages(value):
            '(NumberNode "{0}")))'.format(value))
 
 
-def run_opencog_daemon():
-    """
-    Bootstraps the OpenCog CogServer daemon so that it will run in the
-     background with the REST API so that further commands can be issued by
-     sending them to the REST API
-    """
-    # Start the OpenCog CogServer daemon
-    if USE_VAGRANT:
-        process = Process(target=run_vagrant_command,
-                          args=(VAGRANT_ID, OPENCOG_COGSERVER_START))
-        process.start()
+class Server(object):
+    def __init__(self):
+        self.process = None
 
-    else:
-        os.chdir(OPENCOG_SUBFOLDER)
-        Popen([OPENCOG_COGSERVER_START])
+    def start(self):
+        """
+        Bootstraps the OpenCog CogServer daemon so that it will run in the
+         background with the REST API so that further commands can be issued by
+         sending them to the REST API
+        """
+        self.stop()
+        # Start the OpenCog CogServer daemon
+        if USE_VAGRANT:
+            self.process = Process(target=run_vagrant_command,
+                                   args=(VAGRANT_ID, OPENCOG_COGSERVER_START))
+            self.process.daemon = True
+            self.process.start()
 
-    sleep(OPENCOG_INIT_DELAY)
+        else:
+            os.chdir(OPENCOG_SUBFOLDER)
+            Popen([OPENCOG_COGSERVER_START])
 
-    # Start the REST API so that further commands can be issued using it
-    os.system(OPENCOG_RESTAPI_START)
+        sleep(OPENCOG_INIT_DELAY)
 
+        # Start the OpenCog REST API
+        if USE_VAGRANT:
+            self.process = Process(target=run_vagrant_command,
+                                   args=(VAGRANT_ID, OPENCOG_RESTAPI_START))
+            self.process.daemon = True
+            self.process.start()
+        else:
+            os.system(OPENCOG_RESTAPI_START)
 
-def terminate_opencog_daemon():
-    """
-    Terminate the OpenCog CogServer daemon
-    """
-    # CogServer doesn't terminate cleanly when running REST API process. When
-    # fixed, change this to a much friendlier mechanism
-    os.system(OPENCOG_COGSERVER_STOP)
-    sleep(OPENCOG_INIT_DELAY)
+        sleep(OPENCOG_INIT_DELAY)
+
+    @staticmethod
+    def stop():
+        """
+        Terminate the OpenCog CogServer daemon
+        """
+        try:
+            shell('shutdown')
+            sleep(OPENCOG_INIT_DELAY)
+        except ConnectionError:
+            pass
