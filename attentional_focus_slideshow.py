@@ -35,7 +35,7 @@ gwenview ./timeseries -s
 
 import os
 from subprocess import check_call
-from client import *
+from opencog import *
 
 __author__ = 'Cosmo Harrigan'
 

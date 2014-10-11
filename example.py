@@ -11,7 +11,7 @@ Read README.md before running this example.
 
 __author__ = 'Cosmo Harrigan'
 
-from client import *
+from opencog import *
 
 # Configurable parameters:
 num_steps = 50                            # Number of time steps
@@ -21,10 +21,9 @@ output_filename = 'ecan-timeseries.csv'   # Output filename
 agent_path = "../opencog/python/pln/examples/tuffy/smokes/smokes_agent"
 agent_name = "InferenceAgent"
 
-# Restart the CogServer - it is not currently designed in such a way that it
-# can completely reinitialize itself cleanly without restarting
-terminate_opencog_daemon()
-run_opencog_daemon()
+# Launch an OpenCog server as a background process
+server = Server()
+server.start()
 
 # Initialize the CogServer. This script can be ran multiple times without
 # restarting the CogServer, since it will clear the contents of the atomspace

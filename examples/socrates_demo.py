@@ -19,7 +19,7 @@ import re
 from pln.examples.socrates_demo import socrates_agent
 from opencog.atomspace import types, AtomSpace, TruthValue
 from opencog.scheme_wrapper import load_scm, scheme_eval, scheme_eval_h, __init__
-from client import clear_atomspace, scheme, dump_atomspace_dot
+from opencog import clear_atomspace, scheme, dump_atomspace_dot
 from subprocess import check_call
 
 __author__ = 'Sebastian Ruder'
@@ -31,7 +31,7 @@ if not os.path.exists(sub_dir):
     os.makedirs(sub_dir)
 
 
-#TODO: method should be ported to client.py so it can be reused
+#TODO: method should be ported to opencog.py so it can be reused
 #more easily
 def render_image(dot, uid):
     """
@@ -86,7 +86,7 @@ result_found = False
 outputs_produced = 0
 
 for i in range(0, num_steps):
-    result = agent.run(atomspace)
+    result = agent.start(atomspace)
 
     output = None
     input = None
