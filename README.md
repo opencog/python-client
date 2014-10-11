@@ -29,6 +29,8 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 ##### IPython Notebook example
 The recommended way to learn how to use **python-client** is with IPython Notebook. An example demonstration is provided that combines documentation, interactive code execution, and graphical visualizaitons.
 
+A static rendering of the example is available online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/ipython-notebook/example.ipynb).
+
 You will need to install [IPython Notebook](http://ipython.org/notebook.html) first.
 
 Then, run ```ipython notebook``` from the command line in this folder, and then open the notebook named ```example.ipynb```
