@@ -16,7 +16,7 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 #### Requirements
 
-- Requires the REST API to be configured as described [here](http://wiki.opencog.org/w/REST_API#Configuration) and installation of the [requests library](http://docs.python-requests.org/en/latest/user/install/#install)
+- Requires the REST API to be configured as described [here](https://github.com/opencog/opencog/blob/master/opencog/python/README.md) and installation of the [requests library](http://docs.python-requests.org/en/latest/user/install/#install)
 
 - For full functionality, you should also install [PyMongo](http://api.mongodb.org/python/current/installation.html), [MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/) and [GraphViz](http://www.graphviz.org/Download..php)
 
