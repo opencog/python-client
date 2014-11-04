@@ -253,10 +253,30 @@ server.start()
     Represents the STI value of an atom at a particular point in time.
     Intended to be contained in a PointInTime object with a timestep value.
 
-**The following operations are available after starting a RelExServer.**
+##### RelEx Server
+
+**Before performing operations with RelEx, you need to have an instance of a RelExServer object:**
+
+```
+import opencog
+relex_server = opencog.RelExServer()
+relex_server.start()
+```
+
+**The following operations are available after starting a RelExServer:**
+
+###### start()
+    Bootstraps the RelEx server daemon so that it will run in the background with the
+    socket API so that further commands can be issued by sending them to the socket API
+
+###### stop()
+    Terminate the RelEx server daemon
+
+##### Operations
 
 ###### relex(sentence, display=True, concise=True)
     Interface to RelEx. Requires a RelExServer to be running.
+    
     :param sentence: The sentence to send to RelEx for parsing
     :param display: Whether to print the output (default=True)
     :param concise: Whether to strip status messages from the output (default=True)
