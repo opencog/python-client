@@ -5,8 +5,11 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 #### Functionality
 
-- Start and stop the OpenCog server
 - Control an OpenCog server on your local machine or on a Vagrant box
+- Control a RelEx server on a Vagrant box (local machine functionality not yet added)
+- Start and stop the OpenCog server
+- Start and stop the RelEx server
+- Interact with the RelEx and RelEx2Logic NLP pipelines with single Python commands
 - Control the steps of each mind agent
 - Capture the contents of the attentional focus at each step in Scheme format
 - Capture the discrete dynamical evolution of the attentional focus
@@ -249,3 +252,20 @@ server.start()
 
     Represents the STI value of an atom at a particular point in time.
     Intended to be contained in a PointInTime object with a timestep value.
+
+**The following operations are available after starting a RelExServer.**
+
+###### relex(sentence, display=True, concise=True)
+    Interface to RelEx. Requires a RelExServer to be running.
+    :param sentence: The sentence to send to RelEx for parsing
+    :param display: Whether to print the output (default=True)
+    :param concise: Whether to strip status messages from the output (default=True)
+    :return: Human-readable parse of the sentence
+
+###### to_logic(sentence, clear=True, display=True)
+    Interface to Relex2Logic. Requires a Server and a RelExServer to be running.
+    
+    :param sentence: The sentence to send to RelEx2Logic for parsing
+    :param clear: Whether to clear the atomspace before processing (default=True)
+    :param display: Whether to print the output (default=True)
+    :return: Contents of the SetLink representing the parsed sentence
