@@ -391,7 +391,83 @@ def set_wages(value):
            '(NumberNode "{0}")))'.format(value))
 
 
+def relex(sentence, display=True, concise=True):
+    """
+    :param sentence: The sentence to send to RelEx for parsing
+    :param display: Whether to print the output (default=True)
+    :param concise: Whether to strip status messages from the output (default=True)
+    :return: Human-readable parse of the sentence
+    """
+    if USE_VAGRANT:
+        result = run_vagrant_command(
+            VAGRANT_ID_RELEX, 'cd /home/vagrant/relex && ./relex.sh 1 "" "' + sentence + '"')
+        if concise:
+            result = result.split("Parse 1 of 1", 1)[1]
+            result = result.rpartition("======")[0]
+            result = result.strip()
+
+        if display:
+            print result
+        else:
+            return result
+
+
+def to_logic(sentence, clear=True, display=True):
+    """
+    :param sentence: The sentence to send to RelEx2Logic for parsing
+    :param clear: Whether to clear the atomspace before processing (default=True)
+    :param display: Whether to print the output (default=True)
+    :return: Contents of the SetLink representing the parsed sentence
+    """
+    if clear:
+        scheme("(clear)")
+    scheme('(r2l "' + sentence + '")')
+    if display:
+        print scheme("(cog-outgoing-set (car (cog-get-atoms 'SetLink)))")
+
+
+class RelExServer(object):
+    """
+    RelEx server daemon
+    """
+    def __init__(self):
+        self.process = None
+
+    def start(self):
+        """
+        Bootstraps the RelEx daemon so that it will run in the
+         background with the socket API so that further commands can be issued by
+         sending them to the socket API
+        """
+        self.stop()
+        # Start the OpenCog CogServer daemon
+        if USE_VAGRANT:
+            self.process = Process(target=run_vagrant_command,
+                                   args=(VAGRANT_ID_RELEX, RELEX_START))
+            self.process.daemon = True
+            self.process.start()
+        else:
+            assert "Currently only implemented for Vagrant"
+
+        sleep(OPENCOG_INIT_DELAY)
+
+    def stop(self):
+        """
+        Terminate the RelEx daemon
+        """
+        if USE_VAGRANT:
+            self.process = Process(target=run_vagrant_command,
+                                   args=(VAGRANT_ID_RELEX, RELEX_STOP))
+            self.process.daemon = True
+            self.process.start()
+        else:
+            assert "Currently only implemented for Vagrant"
+
+
 class Server(object):
+    """
+    OpenCog server daemon
+    """
     def __init__(self):
         self.process = None
 

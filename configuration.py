@@ -17,15 +17,37 @@ from time import sleep
 # If you are running OpenCog in a Vagrant VM and running the Python Client API
 # on the host machine, then set the following parameter 'USE_VAGRANT' to True
 # and specify the ID of your Vagrant VM (you can find this using the command
-# 'vagrant global-status'
+# 'vagrant global-status')
 USE_VAGRANT = False
 VAGRANT_ID = "XXXX"
+VAGRANT_ID_RELEX = "XXXX"
 
 # Configure MongoDB parameters
 MONGODB_CONNECTION_STRING = "mongodb://localhost:27017"
 MONGODB_DATABASE = 'attention-timeseries'
 
+### Vagrant setup
+
+try:
+    import vagrant
+    from fabric.api import task, run, settings, hide
+
+    # Allows bash commands to be sent to a specific Vagrant VM
+    @task
+    def run_vagrant_command(machine_name, command):
+        v = vagrant.Vagrant()
+        with settings(host_string=v.user_hostname_port(vm_name=machine_name),
+                      key_filename=v.keyfile(vm_name=machine_name),
+                      disable_known_hosts=True,
+                      warn_only=True):
+            with hide('output', 'running', 'warnings'):
+                return run(command)
+except ImportError:
+    print "Optional Vagrant functionality not enabled; to enable, install " \
+          "python-vagrant, fabric"
+
 ### MongoDB setup
+
 try:
     import pymongo
     # Create a MongoDB connection
@@ -43,6 +65,7 @@ def clear_mongodb():
         mongo = client[MONGODB_DATABASE]
 
 ### OpenCog REST API client setup
+
 IP_ADDRESS = '127.0.0.1'
 PORT = '5000'
 uri = 'http://' + IP_ADDRESS + ':' + PORT + '/api/v1.1/'
@@ -62,24 +85,7 @@ if not USE_VAGRANT:
     OPENCOG_SUBFOLDER = expanduser("~") + '/opencog/build'
 else:
     OPENCOG_COGSERVER_START = "cd ~/opencog/build && ./opencog/server/cogserver"
+    RELEX_START = "cd ~/relex && ./opencog-server.sh"
+    RELEX_STOP = "pkill opencog-server"
     OPENCOG_SOURCE_FOLDER = "/home/vagrant/opencog/opencog/"
     OPENCOG_SUBFOLDER = "/home/vagrant/opencog/build"
-
-### Vagrant setup
-try:
-    import vagrant
-    from fabric.api import task, run, settings, hide
-
-    # Allows bash commands to be sent to a specific Vagrant VM
-    @task
-    def run_vagrant_command(machine_name, command):
-        v = vagrant.Vagrant()
-        with settings(host_string=v.user_hostname_port(vm_name=machine_name),
-                      key_filename=v.keyfile(vm_name=machine_name),
-                      disable_known_hosts=True,
-                      warn_only=True):
-            with hide('output'):
-                run(command)
-except ImportError:
-    print "Optional Vagrant functionality not enabled; to enable, install " \
-          "python-vagrant, fabric"

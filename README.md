@@ -5,8 +5,11 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 #### Functionality
 
-- Start and stop the OpenCog server
 - Control an OpenCog server on your local machine or on a Vagrant box
+- Control a RelEx server on a Vagrant box (local machine functionality not yet added)
+- Start and stop the OpenCog server
+- Start and stop the RelEx server
+- Interact with the RelEx and RelEx2Logic NLP pipelines with single Python commands
 - Control the steps of each mind agent
 - Capture the contents of the attentional focus at each step in Scheme format
 - Capture the discrete dynamical evolution of the attentional focus
@@ -22,10 +25,16 @@ Defines an interface to allow OpenCog experiments to be written as short Python 
 
 #### Example usage
 
-##### IPython Notebook example
+##### IPython Notebook examples
 The recommended way to learn how to use **python-client** is with IPython Notebook. An example demonstration is provided that combines documentation, interactive code execution, and graphical visualizations.
 
-**The example can be viewed online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/master/example.ipynb).** Note that the online version is not interactive, whereas on your own machine it will be interactive.
+###### Simple example
+**A simple example can be viewed online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/master/example.ipynb).**
+
+###### NLP demo
+**An NLP demo can be viewed online [here](http://nbviewer.ipython.org/github/opencog/python-client/blob/master/opencog-nlp.ipynb).**
+
+**Note that the online versions are not interactive, whereas on your own machine they will be interactive.**
 
 To run the example on your machine, you will need to install [IPython Notebook](http://ipython.org/notebook.html) first.
 
@@ -44,6 +53,8 @@ The Client API can be used with Vagrant. For example, you can run the OpenCog da
 
 To set up OpenCog in this manner, follow these instructions:
 http://wiki.opencog.org/w/Building_OpenCog_in_a_Linux_Virtual_Machine_on_Mac_OS_X
+
+Then, install the Python package [python-vagrant](https://pypi.python.org/pypi/python-vagrant)
 
 Then, to use the Client API with Vagrant, open the file ```configuration.py``` and set the parameter ```USE_VAGRANT``` to ```True``` and ```VAGRANT_ID``` to the ID of your VM
 
@@ -247,3 +258,40 @@ server.start()
 
     Represents the STI value of an atom at a particular point in time.
     Intended to be contained in a PointInTime object with a timestep value.
+
+##### RelEx Server
+
+**Before performing operations with RelEx, you need to have an instance of a RelExServer object:**
+
+```
+import opencog
+relex_server = opencog.RelExServer()
+relex_server.start()
+```
+
+**The following operations are available after starting a RelExServer:**
+
+###### start()
+    Bootstraps the RelEx server daemon so that it will run in the background with the
+    socket API so that further commands can be issued by sending them to the socket API
+
+###### stop()
+    Terminate the RelEx server daemon
+
+##### Operations
+
+###### relex(sentence, display=True, concise=True)
+    Interface to RelEx. Requires a RelExServer to be running.
+    
+    :param sentence: The sentence to send to RelEx for parsing
+    :param display: Whether to print the output (default=True)
+    :param concise: Whether to strip status messages from the output (default=True)
+    :return: Human-readable parse of the sentence
+
+###### to_logic(sentence, clear=True, display=True)
+    Interface to Relex2Logic. Requires a Server and a RelExServer to be running.
+    
+    :param sentence: The sentence to send to RelEx2Logic for parsing
+    :param clear: Whether to clear the atomspace before processing (default=True)
+    :param display: Whether to print the output (default=True)
+    :return: Contents of the SetLink representing the parsed sentence
