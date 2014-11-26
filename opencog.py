@@ -507,8 +507,12 @@ class Server(object):
         """
         Terminate the OpenCog CogServer daemon
         """
-        try:
-            shell('shutdown')
+        if USE_VAGRANT:
+            try:
+                shell('shutdown')
+                sleep(OPENCOG_INIT_DELAY)
+            except ConnectionError:
+                pass
+        else:
+            os.system(OPENCOG_COGSERVER_STOP)
             sleep(OPENCOG_INIT_DELAY)
-        except ConnectionError:
-            pass
