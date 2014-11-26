@@ -76,11 +76,12 @@ headers = {'content-type': 'application/json'}
 # CogServer
 
 OPENCOG_INIT_DELAY = 3
-OPENCOG_RESTAPI_START = 'echo "restapi.Start" | nc localhost 17001'
+OPENCOG_RESTAPI_START = 'echo "restapi.Start" | nc localhost 17001&'
 
 VAGRANT_PREFIX = "vagrant ssh " + VAGRANT_ID + " -c "
 if not USE_VAGRANT:
     OPENCOG_COGSERVER_START = './opencog/server/cogserver'
+    OPENCOG_COGSERVER_STOP = "pkill cogserver"
     OPENCOG_SOURCE_FOLDER = expanduser("~") + "/opencog/opencog/"
     OPENCOG_SUBFOLDER = expanduser("~") + '/opencog/build'
 else:
