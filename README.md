@@ -56,7 +56,7 @@ http://wiki.opencog.org/w/Building_OpenCog_in_a_Linux_Virtual_Machine_on_Mac_OS_
 
 Then, install the Python package [python-vagrant](https://pypi.python.org/pypi/python-vagrant)
 
-Then, to use the Client API with Vagrant, open the file ```configuration.py``` and set the parameter ```USE_VAGRANT``` to ```True``` and ```VAGRANT_ID``` to the ID of your VM
+Then, to use the Client API with Vagrant, open the file ```configuration.py``` and set the parameter ```USE_VAGRANT``` to ```True``` and ```VAGRANT_ID``` to the ID of your VM (you can find this using the command ```vagrant global-status```)
 
 #### OpenCog Python Client API Documentation
 
