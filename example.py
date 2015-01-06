@@ -1,6 +1,9 @@
 """
 An example implementation of the interface defined in client.py
 
+Important: An OpenCog server must be running in the background and the REST API
+must be loaded before running this script.
+
 Runs 'num_steps' cycles. At each discrete timestep, captures the STI values of
 the atoms in the attentional focus, and also capture a Scheme dump of the
 attentional focus. When finished, exports the STI timeseries dataset to
@@ -23,7 +26,7 @@ agent_name = "InferenceAgent"
 
 # Launch an OpenCog server as a background process
 server = Server()
-server.start()
+#server.start()
 
 # Initialize the CogServer. This script can be ran multiple times without
 # restarting the CogServer, since it will clear the contents of the atomspace
