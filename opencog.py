@@ -57,25 +57,10 @@ def create_point(timestep, atoms, scheme=None):
 
     return point
 
-
-def _pause():
-    """
-    As recorded in issue #859:
-    https://github.com/opencog/opencog/issues/859
-
-    the CogServer throws a segmentation fault if repeated requests are made
-    without rate limiting them. Once that issue has been addressed, this
-    method should not be used anymore.
-    """
-    sleep(.5)
-
-
 def shell(command):
     """
     Send a command to the CogServer shell
     """
-    _pause()
-
     data = {'command': command + '\n'}
 
     post(uri + 'shell', data=json.dumps(data), headers=headers)
@@ -85,8 +70,6 @@ def scheme(command):
     """
     Send a Scheme command to the Scheme interpreter
     """
-    _pause()
-
     data = {'command': command + '\n'}
 
     result = post(uri + 'scheme', data=json.dumps(data), headers=headers)
